@@ -1,0 +1,30 @@
+port: 7890
+socks-port: 7891
+allow-lan: true
+mode: Rule
+log-level: info
+external-controller: :9090
+dns:
+  enabled: true
+  nameserver:
+    - 119.29.29.29
+    - 223.5.5.5
+  fallback:
+    - 8.8.8.8
+    - 8.8.4.4
+    - tls://1.0.0.1:853
+    - tls://dns.google:853
+proxies:
+  - {name: 美国A, server: 127.0.0.1, port: 443, client-fingerprint: chrome, type: vmess, uuid: aaaaaaaa-aaaa-aaaa-aaaa-daaaaaaaaaad, alterId: 0, cipher: auto, tls: true, tfo: false, skip-cert-verify: false, network: ws, ws-opts: {path: /ray, headers: {Host: www.cloudflare.net}}}
+  - {name: 日本A, server: 127.0.0.1, port: 443, client-fingerprint: chrome, type: vmess, uuid: aaaaaaaa-aaaa-aaaa-aaaa-daaaaaaaaaad, alterId: 0, cipher: auto, tls: true, tfo: false, skip-cert-verify: false, network: ws, ws-opts: {path: /ray, headers: {Host: www.cloudflare.net}}}
+  - {name: 阿根廷A, server: 127.0.0.1, port: 443, client-fingerprint: chrome, type: vmess, uuid: aaaaaaaa-aaaa-aaaa-aaaa-daaaaaaaaaad, alterId: 0, cipher: auto, tls: true, tfo: false, skip-cert-verify: false, network: ws, ws-opts: {path: /ray, headers: {Host: www.cloudflare.net}}}
+proxy-groups:
+  - name: 节点选择
+    type: select
+    proxies:
+      - DIRECT
+      - 美国A
+      - 日本A
+      - 阿根廷A
+rules:
+  - MATCH,节点选择

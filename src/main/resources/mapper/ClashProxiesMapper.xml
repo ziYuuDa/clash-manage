@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="clash.manage.dao.ClashProxiesMapper">
+    <insert id="insert">
+        INSERT INTO clash_proxies
+            (name, subscribe_name, expired_time, del, value, modify_log)
+        VALUES (#{name}, #{subscribeName}, #{expiredTime}, #{del}, #{value}, #{modifyLog})
+
+    </insert>
+    <update id="update">
+        UPDATE clash_proxies
+        SET name=#{name},
+            expired_time=#{expiredTime},
+            del=#{del},
+            value=#{value},
+            modify_log=#{modifyLog}
+        WHERE id = #{id}
+    </update>
+
+    <select id="list" resultType="clash.manage.model.ClashProxies">
+        SELECT *
+        FROM clash_proxies
+        WHERE del = 1
+          and (expired_time is null or expired_time > now())
+    </select>
+
+    <select id="listBySubscribeName" resultType="clash.manage.model.ClashProxies">
+        SELECT *
+        FROM clash_proxies
+        WHERE subscribe_name = #{subscribeName}
+    </select>
+</mapper>
